@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,42 +8,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Amazon HTML Description</h1>
 
-<h1>Amazon HTML Description</h1>
-
-<section id="toolbar">
-    <button onclick="execCmd('bold')">Bold</button>
-    <button onclick="execCmd('italic')">Italic</button>
-    <button onclick="execCmd('underline')">Underline</button>
-    <button onclick="execCmd('insertOrderedList')">Numbering</button>
-    <button onclick="execCmd('insertUnorderedList')">Bullets</button>
-    <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
-    <button onclick="clearEditor()">Clear</button>
+    <section id="toolbar">
+        <button onclick="execCmd('bold')">Bold</button>
+        <button onclick="execCmd('italic')">Italic</button>
+        <button onclick="execCmd('underline')">Underline</button>
+        <button onclick="execCmd('insertOrderedList')">Numbering</button>
+        <button onclick="execCmd('insertUnorderedList')">Bullets</button>
+        <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
+        <button onclick="clearEditor()">Clear</button>
+        <br>
+        <button onclick="insertSymbol('✔')">✔</button>
+        <button onclick="insertSymbol('©')">©</button>
+        <button onclick="insertSymbol('®')">®</button>
+        <button onclick="insertSymbol('★')">★</button>
+        <button onclick="insertSymbol('™')">™</button>
+        <button onclick="insertSymbol('♥')">♥</button>
+        <button onclick="insertSymbol('①')">①</button>
+        <button onclick="insertSymbol('②')">②</button>
+        <button onclick="insertSymbol('③')">③</button>
+        <button onclick="insertSymbol('④')">④</button>
+    </section>
+    <section id="editor" contenteditable="true" oninput="updateCharCount()"></section>
     <br>
-    <button onclick="insertSymbol('✔')">✔</button>
-    <button onclick="insertSymbol('©')">©</button>
-    <button onclick="insertSymbol('®')">®</button>
-    <button onclick="insertSymbol('★')">★</button>
-    <button onclick="insertSymbol('™')">™</button>
-    <button onclick="insertSymbol('♥')">♥</button>
-    <button onclick="insertSymbol('①')">①</button>
-    <button onclick="insertSymbol('②')">②</button>
-    <button onclick="insertSymbol('③')">③</button>
-    <button onclick="insertSymbol('④')">④</button>
-</section>
-
-<section id="editor" contenteditable="true" oninput="updateCharCount()"></section>
-<br>
-<button onclick="showHTML()">Preview HTML</button>
-<button onclick="copyHTML()">Copy HTML</button>
-
-<section class="html-output" id="html-output"></section>
-<div id="char-counter">
-    Visible character count: <span id="visible-count">0</span> |
-    HTML character count: <span id="html-count">0</span>
-</div>
-
-<script src="./main.js"></script>
-
+    <button onclick="showHTML()">Preview HTML</button>
+    <button onclick="copyHTML()">Copy HTML</button>
+    <section class="html-output" id="html-output"></section>
+    <div id="char-counter">
+        Visible character count: <span id="visible-count">0</span> |
+        HTML character count: <span id="html-count">0</span>
+    </div>
+    <script src="./main.js"></script>
 </body>
 </html>

@@ -42,7 +42,10 @@
 <button onclick="copyHTML()">Copy HTML</button>
 
 <section class="html-output" id="html-output"></section>
-<div id="char-counter">Character count: <span id="count">0</span></div>
+<div id="char-counter">
+    Visible character count: <span id="visible-count">0</span> |
+    HTML character count: <span id="html-count">0</span>
+</div>
 
 <script>
     var isVisualMode = true;
@@ -61,6 +64,7 @@
             editor.setAttribute('contenteditable', true);
         }
         isVisualMode = !isVisualMode;
+        updateCharCount(); // Update character counts when toggling modes
     }
 
     function showHTML() {
@@ -68,7 +72,7 @@
         var editorContent = isVisualMode ? editor.innerHTML.trim() : editor.textContent.trim();
         editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
         document.getElementById('html-output').textContent = editorContent;
-        updateCharCount();  // Update character count after preview
+        updateCharCount(); // Update character counts after preview
     }
 
     function copyHTML() {
@@ -88,22 +92,30 @@
     function clearEditor() {
         document.getElementById('editor').innerHTML = '';
         document.getElementById('html-output').textContent = '';
-        document.getElementById('count').textContent = '0';  // Reset character count
+        document.getElementById('visible-count').textContent = '0'; // Reset visible character count
+        document.getElementById('html-count').textContent = '0'; // Reset HTML character count
     }
 
     function insertSymbol(symbol) {
         var editor = document.getElementById('editor');
         editor.focus();
         document.execCommand('insertText', false, symbol);
-        updateCharCount();  // Update character count after inserting a symbol
+        updateCharCount(); // Update character counts after inserting a symbol
     }
 
     function updateCharCount() {
         var editor = document.getElementById('editor');
-        var editorContent = isVisualMode ? editor.innerHTML : editor.textContent;
-        // Remove tags to count characters only in text
-        var charCount = editorContent.replace(/<[^>]*>/g, '').length;
-        document.getElementById('count').textContent = charCount;
+        var htmlContent = isVisualMode ? editor.innerHTML : editor.textContent;
+
+        // Visible character count (excluding HTML tags)
+        var visibleCount = htmlContent.replace(/<[^>]*>/g, '').length;
+
+        // HTML character count (including HTML tags)
+        var htmlCount = htmlContent.length;
+
+        // Update counts in the UI
+        document.getElementById('visible-count').textContent = visibleCount;
+        document.getElementById('html-count').textContent = htmlCount;
     }
 </script>
 

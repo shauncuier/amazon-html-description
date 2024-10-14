@@ -11,6 +11,7 @@
         .html-output { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
         #toolbar { margin-bottom: 10px; }
         #editor[contenteditable="true"] { background-color: #fff; }
+        #char-counter { margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -35,12 +36,13 @@
     <button onclick="insertSymbol('④')">④</button>
 </section>
 
-<section id="editor" contenteditable="true"></section>
+<section id="editor" contenteditable="true" oninput="updateCharCount()"></section>
 <br>
 <button onclick="showHTML()">Preview HTML</button>
 <button onclick="copyHTML()">Copy HTML</button>
 
 <section class="html-output" id="html-output"></section>
+<div id="char-counter">Character count: <span id="count">0</span></div>
 
 <script>
     var isVisualMode = true;
@@ -64,16 +66,16 @@
     function showHTML() {
         var editor = document.getElementById('editor');
         var editorContent = isVisualMode ? editor.innerHTML.trim() : editor.textContent.trim();
-        // Ensure valid output for Amazon
         editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
         document.getElementById('html-output').textContent = editorContent;
+        updateCharCount();  // Update character count after preview
     }
 
     function copyHTML() {
         var editor = document.getElementById('editor');
         var editorContent = isVisualMode ? editor.innerHTML.trim() : editor.textContent.trim();
         editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
-        
+
         var tempTextarea = document.createElement("textarea");
         tempTextarea.value = editorContent;
         document.body.appendChild(tempTextarea);
@@ -86,12 +88,22 @@
     function clearEditor() {
         document.getElementById('editor').innerHTML = '';
         document.getElementById('html-output').textContent = '';
+        document.getElementById('count').textContent = '0';  // Reset character count
     }
 
     function insertSymbol(symbol) {
         var editor = document.getElementById('editor');
         editor.focus();
         document.execCommand('insertText', false, symbol);
+        updateCharCount();  // Update character count after inserting a symbol
+    }
+
+    function updateCharCount() {
+        var editor = document.getElementById('editor');
+        var editorContent = isVisualMode ? editor.innerHTML : editor.textContent;
+        // Remove tags to count characters only in text
+        var charCount = editorContent.replace(/<[^>]*>/g, '').length;
+        document.getElementById('count').textContent = charCount;
     }
 </script>
 

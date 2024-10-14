@@ -61,6 +61,7 @@
         <button onclick="execCmd('insertUnorderedList')">Bullets</button>
         <button onclick="execCmd('insertOrderedList')">Numbering</button>
         <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
+        <button onclick="clearEditor()">Clear</button> <!-- Clear button -->
     </div>
 
     <!-- Visual editor that can toggle between visual (contenteditable) and HTML -->
@@ -126,6 +127,12 @@
         document.execCommand("copy");
         document.body.removeChild(tempTextarea);
         alert("HTML copied to clipboard!");
+    }
+
+    // Function to clear the editor content and output
+    function clearEditor() {
+        document.getElementById('editor').innerHTML = ''; // Clear editor
+        document.getElementById('html-output').textContent = ''; // Clear output
     }
 </script>
 

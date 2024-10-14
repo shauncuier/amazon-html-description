@@ -51,32 +51,38 @@
 </head>
 <body>
 
-<div class="editor-container">
-    <h1>Amazon HTML Description Editor</h1>
+<h1>Amazon HTML Description Editor</h1>
 
-    <div id="toolbar">
-        <button onclick="execCmd('bold')">Bold</button>
-        <button onclick="execCmd('italic')">Italic</button>
-        <button onclick="execCmd('underline')">Underline</button>
-        <button onclick="execCmd('insertUnorderedList')">Bullets</button>
-        <button onclick="execCmd('insertOrderedList')">Numbering</button>
-        <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
-        <button onclick="clearEditor()">Clear</button> <!-- Clear button -->
-    </div>
+<section id="toolbar">
+    <button onclick="execCmd('bold')">Bold (b)</button>
+    <button onclick="execCmd('insertOrderedList')">Numbering (1)</button>
+    <button onclick="execCmd('insertUnorderedList')">Bullets (•)</button>
+    <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
+    <button onclick="clearEditor()">Clear</button> <!-- Clear button -->
+    <button onclick="insertSymbol('✔')">✔</button>
+    <button onclick="insertSymbol('©')">©</button>
+    <button onclick="insertSymbol('®')">®</button>
+    <button onclick="insertSymbol('★')">★</button>
+    <button onclick="insertSymbol('™')">™</button>
+    <button onclick="insertSymbol('♥')">♥</button>
+    <button onclick="insertSymbol('①')">①</button>
+    <button onclick="insertSymbol('②')">②</button>
+    <button onclick="insertSymbol('③')">③</button>
+    <button onclick="insertSymbol('④')">④</button>
+</section>
 
-    <!-- Visual editor that can toggle between visual (contenteditable) and HTML -->
-    <div id="editor" contenteditable="true"></div>
-    <br>
-    <button onclick="showHTML()">Preview HTML</button>
-    <button onclick="copyHTML()">Copy HTML</button>
+<!-- Visual editor that can toggle between visual (contenteditable) and HTML -->
+<section id="editor" contenteditable="true"></section>
+<br>
+<button onclick="showHTML()">Preview HTML</button>
+<button onclick="copyHTML()">Copy HTML</button>
 
-    <div class="html-output" id="html-output"></div>
-</div>
+<section class="html-output" id="html-output"></section>
 
 <script>
     var isVisualMode = true;
 
-    // Function to execute text formatting commands (bold, italic, etc.)
+    // Function to execute text formatting commands (bold, etc.)
     function execCmd(command) {
         document.execCommand(command, false, null);
     }
@@ -107,6 +113,8 @@
             // If in HTML mode, use textContent
             editorContent = editor.textContent.trim();
         }
+        // Replace <div> with <p> or <br> for Amazon compliance
+        editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>'); 
         document.getElementById('html-output').textContent = editorContent;
     }
 
@@ -120,6 +128,9 @@
             editorContent = editor.textContent.trim();
         }
 
+        // Replace <div> with <p> or <br> for Amazon compliance
+        editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
+        
         var tempTextarea = document.createElement("textarea");
         tempTextarea.value = editorContent;
         document.body.appendChild(tempTextarea);
@@ -133,6 +144,13 @@
     function clearEditor() {
         document.getElementById('editor').innerHTML = ''; // Clear editor
         document.getElementById('html-output').textContent = ''; // Clear output
+    }
+
+    // Function to insert a special symbol into the editor
+    function insertSymbol(symbol) {
+        var editor = document.getElementById('editor');
+        editor.focus();
+        document.execCommand('insertText', false, symbol);
     }
 </script>
 

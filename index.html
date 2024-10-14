@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon HTML Description Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .editor-container {
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        #editor {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            overflow-y: auto;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .html-output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        #toolbar {
+            margin-bottom: 10px;
+        }
+
+        #editor[contenteditable="true"] {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div class="editor-container">
+    <h1>Amazon HTML Description Editor</h1>
+
+    <div id="toolbar">
+        <button onclick="execCmd('bold')">Bold</button>
+        <button onclick="execCmd('italic')">Italic</button>
+        <button onclick="execCmd('underline')">Underline</button>
+        <button onclick="execCmd('insertUnorderedList')">Bullets</button>
+        <button onclick="execCmd('insertOrderedList')">Numbering</button>
+        <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
+    </div>
+
+    <!-- Visual editor that can toggle between visual (contenteditable) and HTML -->
+    <div id="editor" contenteditable="true"></div>
+    <br>
+    <button onclick="showHTML()">Preview HTML</button>
+    <button onclick="copyHTML()">Copy HTML</button>
+
+    <div class="html-output" id="html-output"></div>
+</div>
+
+<script>
+    var isVisualMode = true;
+
+    // Function to execute text formatting commands (bold, italic, etc.)
+    function execCmd(command) {
+        document.execCommand(command, false, null);
+    }
+
+    // Function to toggle between visual and HTML editing modes
+    function toggleEditorMode() {
+        var editor = document.getElementById('editor');
+        if (isVisualMode) {
+            // Switch to HTML mode
+            editor.textContent = editor.innerHTML.trim();
+            editor.setAttribute('contenteditable', false);
+        } else {
+            // Switch back to Visual (WYSIWYG) mode
+            editor.innerHTML = editor.textContent.trim();
+            editor.setAttribute('contenteditable', true);
+        }
+        isVisualMode = !isVisualMode;
+    }
+
+    // Function to show HTML content in a preview format
+    function showHTML() {
+        var editor = document.getElementById('editor');
+        var editorContent;
+        if (isVisualMode) {
+            // If in visual mode, use innerHTML
+            editorContent = editor.innerHTML.trim();
+        } else {
+            // If in HTML mode, use textContent
+            editorContent = editor.textContent.trim();
+        }
+        document.getElementById('html-output').textContent = editorContent;
+    }
+
+    // Function to copy the HTML content to clipboard
+    function copyHTML() {
+        var editor = document.getElementById('editor');
+        var editorContent;
+        if (isVisualMode) {
+            editorContent = editor.innerHTML.trim();
+        } else {
+            editorContent = editor.textContent.trim();
+        }
+
+        var tempTextarea = document.createElement("textarea");
+        tempTextarea.value = editorContent;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+        alert("HTML copied to clipboard!");
+    }
+</script>
+
+</body>
+</html>

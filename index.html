@@ -5,48 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon HTML Description Editor</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .editor-container {
-            width: 100%;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        #editor {
-            width: 100%;
-            height: 300px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            font-family: monospace;
-            overflow-y: auto;
-        }
-
-        button {
-            padding: 8px 12px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-
-        .html-output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-        }
-
-        #toolbar {
-            margin-bottom: 10px;
-        }
-
-        #editor[contenteditable="true"] {
-            background-color: #fff;
-            font-family: Arial, sans-serif;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #editor { width: 100%; height: 300px; border: 1px solid #ccc; padding: 10px; font-family: monospace; overflow-y: auto; }
+        button { padding: 8px; margin: 5px 0; cursor: pointer; }
+        .html-output { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
+        #toolbar { margin-bottom: 10px; }
+        #editor[contenteditable="true"] { background-color: #fff; }
     </style>
 </head>
 <body>
@@ -58,7 +22,7 @@
     <button onclick="execCmd('insertOrderedList')">Numbering (1)</button>
     <button onclick="execCmd('insertUnorderedList')">Bullets (•)</button>
     <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
-    <button onclick="clearEditor()">Clear</button> <!-- Clear button -->
+    <button onclick="clearEditor()">Clear</button>
     <button onclick="insertSymbol('✔')">✔</button>
     <button onclick="insertSymbol('©')">©</button>
     <button onclick="insertSymbol('®')">®</button>
@@ -71,7 +35,6 @@
     <button onclick="insertSymbol('④')">④</button>
 </section>
 
-<!-- Visual editor that can toggle between visual (contenteditable) and HTML -->
 <section id="editor" contenteditable="true"></section>
 <br>
 <button onclick="showHTML()">Preview HTML</button>
@@ -82,53 +45,33 @@
 <script>
     var isVisualMode = true;
 
-    // Function to execute text formatting commands (bold, etc.)
     function execCmd(command) {
         document.execCommand(command, false, null);
     }
 
-    // Function to toggle between visual and HTML editing modes
     function toggleEditorMode() {
         var editor = document.getElementById('editor');
         if (isVisualMode) {
-            // Switch to HTML mode
             editor.textContent = editor.innerHTML.trim();
             editor.setAttribute('contenteditable', false);
         } else {
-            // Switch back to Visual (WYSIWYG) mode
             editor.innerHTML = editor.textContent.trim();
             editor.setAttribute('contenteditable', true);
         }
         isVisualMode = !isVisualMode;
     }
 
-    // Function to show HTML content in a preview format
     function showHTML() {
         var editor = document.getElementById('editor');
-        var editorContent;
-        if (isVisualMode) {
-            // If in visual mode, use innerHTML
-            editorContent = editor.innerHTML.trim();
-        } else {
-            // If in HTML mode, use textContent
-            editorContent = editor.textContent.trim();
-        }
-        // Replace <div> with <p> or <br> for Amazon compliance
-        editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>'); 
+        var editorContent = isVisualMode ? editor.innerHTML.trim() : editor.textContent.trim();
+        // Ensure valid output for Amazon
+        editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
         document.getElementById('html-output').textContent = editorContent;
     }
 
-    // Function to copy the HTML content to clipboard
     function copyHTML() {
         var editor = document.getElementById('editor');
-        var editorContent;
-        if (isVisualMode) {
-            editorContent = editor.innerHTML.trim();
-        } else {
-            editorContent = editor.textContent.trim();
-        }
-
-        // Replace <div> with <p> or <br> for Amazon compliance
+        var editorContent = isVisualMode ? editor.innerHTML.trim() : editor.textContent.trim();
         editorContent = editorContent.replace(/<div>/g, '<p>').replace(/<\/div>/g, '</p>').replace(/<p><\/p>/g, '<br>');
         
         var tempTextarea = document.createElement("textarea");
@@ -140,13 +83,11 @@
         alert("HTML copied to clipboard!");
     }
 
-    // Function to clear the editor content and output
     function clearEditor() {
-        document.getElementById('editor').innerHTML = ''; // Clear editor
-        document.getElementById('html-output').textContent = ''; // Clear output
+        document.getElementById('editor').innerHTML = '';
+        document.getElementById('html-output').textContent = '';
     }
 
-    // Function to insert a special symbol into the editor
     function insertSymbol(symbol) {
         var editor = document.getElementById('editor');
         editor.focus();

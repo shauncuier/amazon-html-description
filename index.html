@@ -3,27 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon HTML Description Editor</title>
+    <title>Amazon HTML Description</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        #editor { width: 100%; height: 300px; border: 1px solid #ccc; padding: 10px; font-family: monospace; overflow-y: auto; }
+        #editor { width: 100%; height: 200px; border: 1px solid #ccc; padding: 10px; font-family: monospace; overflow-y: auto; }
         button { padding: 8px; margin: 5px 0; cursor: pointer; }
         .html-output { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
         #toolbar { margin-bottom: 10px; }
-        #editor[contenteditable="true"] { background-color: #fff; }
         #char-counter { margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<h1>Amazon HTML Description Editor</h1>
+<h1>Amazon HTML Description</h1>
 
 <section id="toolbar">
-    <button onclick="execCmd('bold')">Bold (b)</button>
-    <button onclick="execCmd('insertOrderedList')">Numbering (1)</button>
-    <button onclick="execCmd('insertUnorderedList')">Bullets (•)</button>
+    <button onclick="execCmd('bold')">Bold</button>
+    <button onclick="execCmd('italic')">Italic</button>
+    <button onclick="execCmd('underline')">Underline</button>
+    <button onclick="execCmd('insertOrderedList')">Numbering</button>
+    <button onclick="execCmd('insertUnorderedList')">Bullets</button>
     <button onclick="toggleEditorMode()">Toggle Visual/HTML</button>
     <button onclick="clearEditor()">Clear</button>
+    <br>
     <button onclick="insertSymbol('✔')">✔</button>
     <button onclick="insertSymbol('©')">©</button>
     <button onclick="insertSymbol('®')">®</button>
@@ -52,6 +57,7 @@
 
     function execCmd(command) {
         document.execCommand(command, false, null);
+        updateCharCount(); // Update character counts after command execution
     }
 
     function toggleEditorMode() {
